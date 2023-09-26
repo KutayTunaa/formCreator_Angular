@@ -1,0 +1,53 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-4">
+  <h2>Form Answers</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+              <div class="flex flex-column gap-2">
+                <input placeholder="Form ID" pInputText id="formId" aria-describedby="form-help" [(ngModel)]="formId" />
+                <small id="username-help">Enter your form ID.</small>
+      </div>
+    </div>
+  </div>
+  <p-button id="button" label="Get Form" (click)="getFormId()" styleClass="p-button-sm"></p-button>
+  <p-button id="button" label="Submit" (onClick)="submitAnswer()" styleClass="p-button-sm"></p-button>
+  
+  <div *ngIf="formData.id != 1" class="mt-4">
+    <div class="body-content">
+      <h3 class="mb-4">Form ID: {{formId}}</h3>
+      <div class="form-group">
+        <p><strong>Title:</strong> {{ formData.title }}</p>
+      </div>
+      <div class="form-group">
+        <p><strong>Subtitle:</strong> {{ formData.subTitle }}</p>
+      </div>
+    </div>
+    <hr>
+    <div>
+      <div *ngFor="let question of formData.questions; let i = index" class="mt-4">
+        <h6 class="mt-4"><strong>Question {{i + 1}}</strong></h6>
+
+        <!-- QUESTION TYPES -->
+        <div *ngIf="question.questionType === '1'">
+          <p>{{ question.description }}</p>
+          <div *ngFor="let answer of question.listAnswers; let optionIndex = index">
+            <label>
+              <input *ngIf="formData.id" type="text" placeholder="answer" id="answer.id" pInputText
+                [(ngModel)]="answer.description" />
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="question.questionType === '2'">
+          <p>{{ question.description }}</p>
+            <div *ngFor="let option of question.options;">
+                <input type="radio" *ngIf="option.id" id="{{ option.id }}" class="ml-2" (change)="radioSelected(option.id, question)" [checked]="isChecked(option.id, question)">
+                <label for="{{ option.id }}">{{ option.description }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
